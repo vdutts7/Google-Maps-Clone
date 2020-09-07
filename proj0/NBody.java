@@ -1,4 +1,4 @@
-import java.lang.*;
+import java.lang.Double;
 public class NBody {
 
 	/** Given a file name as a String, returns a double corresponding to the radius of the universe in that file. */

@@ -29,7 +29,7 @@ public class Body {
 
 	}
 
-	/** Calculates distance between this instance of the Body and another body, b2. */
+	/** Calculates and returns distance between this instance of the Body and another body, b2. */
 	public double calcDistance(Body b2) {
 		return Math.sqrt(Math.pow((xxPos - b2.xxPos), 2) + Math.pow((yyPos - b2.yyPos), 2));
 	}
@@ -39,17 +39,17 @@ public class Body {
 		return (6.67*Math.pow(10, -11))*mass*b2.mass/Math.pow(calcDistance(b2), 2);
 	}
 
-	/** Takes in a Body, and returns a double describing the force exerted on this body by the given body in the x direction. */
+	/** Takes in a Body, and calculates and returns a double describing the force exerted on this body by the given body in the x direction. */
 	public double calcForceExertedByX(Body b2) {
 		return calcForceExertedBy(b2)*(b2.xxPos - xxPos)/calcDistance(b2);
 	}
 
-	/** Takes in a Body, and returns a double describing the force exerted on this body by the given body in the y direction. */
+	/** Takes in a Body, and calculates and returns a double describing the force exerted on this body by the given body in the y direction. */
 	public double calcForceExertedByY(Body b2) {
 		return calcForceExertedBy(b2)*(b2.yyPos - yyPos)/calcDistance(b2);
 	}
 
-	/** Take in an array of Bodys and calculates the net X force exerted by all bodies in that array upon the current Body. */
+	/** Take in an array of Bodys and calculates and returns the net X force exerted by all bodies in that array upon the current Body. */
 	public double calcNetForceExertedByX(Body[] bodies) {
 		double netForceExertedByX = 0;
 		for (int i = 0; i<bodies.length; i++) {
@@ -60,7 +60,7 @@ public class Body {
 		return netForceExertedByX;
 	}
 
-	/** Take in an array of Bodys and calculates the net Y force exerted by all bodies in that array upon the current Body. */
+	/** Take in an array of Bodys and calculates and returns the net Y force exerted by all bodies in that array upon the current Body. */
 	public double calcNetForceExertedByY(Body[] bodies) {
 		double netForceExertedByY = 0;
 		for (int i = 0; i<bodies.length; i++) {
