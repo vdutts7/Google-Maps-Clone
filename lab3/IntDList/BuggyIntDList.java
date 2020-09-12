@@ -36,6 +36,7 @@ public class BuggyIntDList extends IntDList {
         // ------ WRITE ADDITIONAL CODE HERE AND ONLY HERE (IF NEEDED) ------
 
         // ------------------------------------------------------------------
+        /**
         if (d2.next.next == null || d1.next.next == null) {
 
             if (d2.next.next == null) {
@@ -44,6 +45,7 @@ public class BuggyIntDList extends IntDList {
                 return d1.next;
             }
         }
+         */
          if (d1.val <= d2.val) {
             d1.next = sortedMerge(d1, d2.next);   // FIXME: Replace this line (if needed). HINT: Step Into(F7) using debugger and try to figure out what it does.
             d1.next.prev = d1;
