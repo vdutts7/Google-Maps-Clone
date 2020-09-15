@@ -1,6 +1,5 @@
 /** Class representing ArrayDeque, a double-ended que powered by an Array. */
 public class ArrayDeque<T> {
-    private static int startingSize = 8;
     private int size;
 
     /**
@@ -56,8 +55,8 @@ public class ArrayDeque<T> {
 
     /** Constructor for empty ArrayDeque. */
     public ArrayDeque() {
-        items = (T[]) new Object[startingSize];
-        nextStart = startingSize / 2;
+        items = (T[]) new Object[8];
+        nextStart = 4;
         nextEnd = nextStart + 1;
 
         size = 0;
