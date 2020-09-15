@@ -38,13 +38,14 @@ public class ArrayDeque<T> {
         T[] holder = (T[]) new Object[adjustedSize];
 
         if (nextEnd == indexAfter(nextStart)) {
-            System.arraycopy(items, indexAfter(nextStart), holder, 1, items.length - indexAfter(nextStart));
+            System.arraycopy(items, indexAfter(nextStart), holder, 1,
+                    items.length - indexAfter(nextStart));
             System.arraycopy(items, 0, holder, 1 + items.length - indexAfter(nextStart), nextEnd);
-        } else if(nextStart > nextEnd) {
+        } else if (nextStart > nextEnd) {
             System.arraycopy(items, indexAfter(nextStart), holder, 1, items.length - nextStart - 1);
             System.arraycopy(items, 0, holder, items.length - nextStart, nextEnd);
         } else {
-            System.arraycopy(items, 1+ nextStart, holder, 1, size);
+            System.arraycopy(items, 1 + nextStart, holder, 1, size);
             nextStart = 0;
             nextEnd = 1 + size;
             items = holder;
@@ -54,8 +55,8 @@ public class ArrayDeque<T> {
     /** Constructor for empty ArrayDeque. */
     public ArrayDeque() {
         items = (T[]) new Object[startingSize];
-        nextStart = startingSize - 1;
-        nextEnd = 0;
+        nextStart = startingSize / 2;
+        nextEnd = nextStart + 1;
 
         size = 0;
     }
@@ -63,18 +64,18 @@ public class ArrayDeque<T> {
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
         if (size == items.length) {
-            changeSize(2*size);
+            changeSize(2 * size);
         } else {
             items[nextStart] = item;
             size += 1;
-            nextEnd = indexBefore(nextStart);
+            nextStart = indexBefore(nextStart);
         }
     }
 
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
         if (size == items.length) {
-            changeSize(2*size);
+            changeSize(2 * size);
         } else {
             items[nextEnd] = item;
             size += 1;
@@ -109,7 +110,7 @@ public class ArrayDeque<T> {
      * If no such item exists, returns null.
      */
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         } else {
             T returnValue = items[indexAfter(nextStart)];
@@ -118,9 +119,8 @@ public class ArrayDeque<T> {
             nextStart = indexAfter(nextStart);
 
             size -= 1;
-
-            if (items.length > 8 && size == 0.25*items.length) {
-                changeSize(items.length/2);
+            if (items.length > 8 && size == items.length / 4) {
+                changeSize(items.length / 2);
             }
             return returnValue;
         }
@@ -130,7 +130,7 @@ public class ArrayDeque<T> {
      * If no such item exists, returns null.
      */
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         } else {
             T returnValue = items[indexBefore(nextEnd)];
@@ -139,24 +139,23 @@ public class ArrayDeque<T> {
             nextEnd = indexBefore(nextEnd);
 
             size -= 1;
-
-            if (items.length > 8 && size == 0.25*items.length) {
-                changeSize(items.length/2);
+            if (items.length > 8 && size == items.length / 4) {
+                changeSize(items.length / 2);
             }
             return returnValue;
         }
 
     }
 
-    /** Gets the item at the given index, where 0 is the front,
+    /**Gets the item at the given index, where 0 is the front,
      * 1 is the next item, and so forth. If no such item exists,
      * returns null. Must not alter the deque.
      */
     public T get(int index) {
-        if (index < 0 || index > (size - 1)) {
+        if (index > (size - 1) || index < 0) {
             return null;
         } else {
-            return items[(1 + index + nextStart)% items.length];
+            return items[(1 + index + nextStart) % items.length];
         }
     }
 

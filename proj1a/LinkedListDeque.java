@@ -4,10 +4,10 @@ public class LinkedListDeque<T> {
     private int size;
 
     /** Nested class for a generic Node, characteristic of LinkedList data structures. */
-    public class Node {
-        public Node prev;
-        public T item;
-        public Node next;
+    private class Node {
+        private Node prev;
+        private T item;
+        private Node next;
 
         public Node(Node m, T i, Node n) {
             prev = m;
@@ -49,11 +49,7 @@ public class LinkedListDeque<T> {
 
     /** Returns true if deque is empty, false otherwise. */
     public boolean isEmpty() {
-        if ((size == 0) && (sentinel == sentinel.next) && (sentinel == sentinel.prev)) {
-            return true;
-        } else {
-            return false;
-        }
+        return size == 0 && sentinel == sentinel.next && sentinel == sentinel.prev;
     }
 
     /** Returns the number of items in the deque. */
@@ -68,7 +64,7 @@ public class LinkedListDeque<T> {
     public void printDeque() {
         Node val = sentinel;
 
-        while(val.next != sentinel) {
+        while (val.next != sentinel) {
             System.out.print(val.next.item + " ");
             val = val.next;
         }
@@ -126,15 +122,21 @@ public class LinkedListDeque<T> {
         }
     }
 
-    /** Same as get, but uses recursion. */
+    /** Same as get, but uses recursion. Utilizes helper method, below */
     public T getRecursive(int index) {
-        if (size <= index) {
+        return helperGetRecursive(index).item;
+    }
+
+    /** Helper method to simplify getRecursive(). */
+    private Node helperGetRecursive(int index) {
+        if (index < 0 || size - 1 < index) {
             return null;
         } else if (index == 0) {
-            return sentinel.next.item;
+            return sentinel.next;
         } else {
-            sentinel.next = sentinel.next.next;
-            return getRecursive(index);
+            Node returnNode = helperGetRecursive(index - 1);
+            returnNode = returnNode.next;
+            return returnNode;
         }
     }
 
