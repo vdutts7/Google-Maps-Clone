@@ -41,11 +41,13 @@ public class ArrayDeque<T> {
             System.arraycopy(items, indexAfter(nextStart), holder, 1,
                     items.length - indexAfter(nextStart));
             System.arraycopy(items, 0, holder, 1 + items.length - indexAfter(nextStart), nextEnd);
-        } else if (nextStart > nextEnd) {
-            System.arraycopy(items, indexAfter(nextStart), holder, 1, items.length - nextStart - 1);
-            System.arraycopy(items, 0, holder, items.length - nextStart, nextEnd);
         } else {
-            System.arraycopy(items, 1 + nextStart, holder, 1, size);
+            if (nextStart > nextEnd) {
+                System.arraycopy(items, indexAfter(nextStart), holder, 1, items.length - nextStart - 1);
+                System.arraycopy(items, 0, holder, items.length - nextStart, nextEnd);
+            } else {
+                System.arraycopy(items, 1 + nextStart, holder, 1, size);
+            }
             nextStart = 0;
             nextEnd = 1 + size;
             items = holder;
@@ -65,22 +67,20 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         if (size == items.length) {
             changeSize(2 * size);
-        } else {
-            items[nextStart] = item;
-            size += 1;
-            nextStart = indexBefore(nextStart);
         }
+        items[nextStart] = item;
+        size += 1;
+        nextStart = indexBefore(nextStart);
     }
 
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
         if (size == items.length) {
             changeSize(2 * size);
-        } else {
-            items[nextEnd] = item;
-            size += 1;
-            nextEnd = indexAfter(nextEnd);
         }
+        items[nextEnd] = item;
+        size += 1;
+        nextEnd = indexAfter(nextEnd);
     }
 
     /** Returns true if deque is empty, false otherwise. */
@@ -112,18 +112,17 @@ public class ArrayDeque<T> {
     public T removeFirst() {
         if (isEmpty()) {
             return null;
-        } else {
-            T returnValue = items[indexAfter(nextStart)];
-
-            items[indexAfter(nextStart)] = null;
-            nextStart = indexAfter(nextStart);
-
-            size -= 1;
-            if (items.length > 8 && size == items.length / 4) {
-                changeSize(items.length / 2);
-            }
-            return returnValue;
         }
+        T returnValue = items[indexAfter(nextStart)];
+
+        items[indexAfter(nextStart)] = null;
+        nextStart = indexAfter(nextStart);
+
+        size -= 1;
+        if (items.length > 8 && size == items.length / 4) {
+            changeSize(items.length / 2);
+        }
+        return returnValue;
     }
 
     /** Removes and returns the item at the back of the deque.
@@ -132,19 +131,17 @@ public class ArrayDeque<T> {
     public T removeLast() {
         if (isEmpty()) {
             return null;
-        } else {
-            T returnValue = items[indexBefore(nextEnd)];
-
-            items[indexBefore(nextEnd)] = null;
-            nextEnd = indexBefore(nextEnd);
-
-            size -= 1;
-            if (items.length > 8 && size == items.length / 4) {
-                changeSize(items.length / 2);
-            }
-            return returnValue;
         }
+        T returnValue = items[indexBefore(nextEnd)];
 
+        items[indexBefore(nextEnd)] = null;
+        nextEnd = indexBefore(nextEnd);
+
+        size -= 1;
+        if (items.length > 8 && size == items.length / 4) {
+            changeSize(items.length / 2);
+        }
+        return returnValue;
     }
 
     /**Gets the item at the given index, where 0 is the front,
@@ -154,9 +151,8 @@ public class ArrayDeque<T> {
     public T get(int index) {
         if (index > (size - 1) || index < 0) {
             return null;
-        } else {
-            return items[(1 + index + nextStart) % items.length];
         }
+        return items[(1 + index + nextStart) % items.length];
     }
 
 }

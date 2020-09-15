@@ -9,7 +9,7 @@ public class LinkedListDeque<T> {
         private T item;
         private Node next;
 
-        public Node(Node m, T i, Node n) {
+        private Node(Node m, T i, Node n) {
             prev = m;
             item = i;
             next = n;
@@ -77,14 +77,13 @@ public class LinkedListDeque<T> {
     public T removeFirst() {
         if (sentinel == sentinel.next) {
             return null;
-        } else {
-            T returnValue = sentinel.next.item;
-            sentinel.next = sentinel.next.next;
-            sentinel.next.prev = sentinel;
-
-            size -= 1;
-            return returnValue;
         }
+        T returnValue = sentinel.next.item;
+        sentinel.next = sentinel.next.next;
+        sentinel.next.prev = sentinel;
+
+        size -= 1;
+        return returnValue;
     }
 
     /** Removes and returns the item at the back of the deque.
@@ -93,14 +92,13 @@ public class LinkedListDeque<T> {
     public T removeLast() {
         if (sentinel == sentinel.prev) {
             return null;
-        } else {
-            T returnValue = sentinel.prev.item;
-            sentinel.prev = sentinel.prev.prev;
-            sentinel.prev.next = sentinel;
-
-            size -= 1;
-            return returnValue;
         }
+        T returnValue = sentinel.prev.item;
+        sentinel.prev = sentinel.prev.prev;
+        sentinel.prev.next = sentinel;
+
+        size -= 1;
+        return returnValue;
     }
 
     /** Gets the item at the given index, where 0 is the front,
