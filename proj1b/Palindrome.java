@@ -17,6 +17,9 @@ public class Palindrome {
      * Note: If word paramater is null, returns false.
      */
     public boolean isPalindrome(String word) {
+        if (word == null) {
+            return false;
+        }
         Deque<Character> tempDeque = wordToDeque(word);
         return isPalindromeHelper(tempDeque);
     }
@@ -40,8 +43,13 @@ public class Palindrome {
     /** Returns return true if the word is a palindrome
      * according to the character comparison test provided by
      * CharacterComparator object, the paramater cc.
+     * Note: Any word of length 1 or 0 is a palindrome.
+     * Note: If word paramater is null, returns false.
      */
     public boolean isPalindrome(String word, CharacterComparator cc) {
+        if (word == null) {
+            return false;
+        }
         Deque<Character> tempDeque = wordToDeque(word);
         return isPalindromeHelper(tempDeque, cc);
     }
