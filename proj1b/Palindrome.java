@@ -20,6 +20,9 @@ public class Palindrome {
         if (word == null) {
             return false;
         }
+        if (word.length() == 0 || word.length() == 1) {
+            return true;
+        }
         Deque<Character> tempDeque = wordToDeque(word);
         return isPalindromeHelper(tempDeque);
     }
@@ -49,6 +52,9 @@ public class Palindrome {
     public boolean isPalindrome(String word, CharacterComparator cc) {
         if (word == null) {
             return false;
+        }
+        if (word.length() == 0 || word.length() == 1) {
+            return true;
         }
         Deque<Character> tempDeque = wordToDeque(word);
         return isPalindromeHelper(tempDeque, cc);
