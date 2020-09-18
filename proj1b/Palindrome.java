@@ -29,7 +29,7 @@ public class Palindrome {
 
     /** Helper method for isPalindrome() */
     private boolean isPalindromeHelper(Deque<Character> tempDeque) {
-        if (tempDeque.isEmpty() || tempDeque.size() == 1) {
+        if (tempDeque.size() == 0 || tempDeque.size() == 1) {
             return true;
         } else {
             Character firstChar = tempDeque.removeFirst();
@@ -64,7 +64,7 @@ public class Palindrome {
      * character comparison test.
      */
     private boolean isPalindromeHelper(Deque<Character> tempDeque, CharacterComparator cc) {
-        if (tempDeque.isEmpty() || tempDeque.size() == 1) {
+        if (tempDeque.size() == 0 || tempDeque.size() == 1) {
             return true;
         } else {
             Character firstChar = tempDeque.removeFirst();
