@@ -94,9 +94,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * throw new RuntimeException("Ring buffer underflow").
      */
     public T dequeue() {
-        // TODO: Dequeue the first item. Don't forget to decrease fillCount and
-        //       update first. Don't worry about throwing the RuntimeException until you
-        //       get to task 4.
         if (isEmpty()) {
             throw new RuntimeException("Ring Buffer underflow");
         }
@@ -120,6 +117,9 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
      * throw new RuntimeException("Ring buffer underflow").
      */
     public T peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("Ring Buffer underflow");
+        }
         return rb[first];
    }
 
