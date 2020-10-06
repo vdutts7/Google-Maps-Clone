@@ -45,11 +45,11 @@ public class Percolation {
         if ((row > (N - 1) || row < 0) || (col > (N - 1) || col < 0)) {
             throw new IndexOutOfBoundsException();
         }
-
-        grid[row][col] = true;
-        if (!isOpen(row, col)) {
-            numOpen += 1;
+        if (isOpen(row, col)) {
+            return;
         }
+        grid[row][col] = true;
+        numOpen += 1;
 
         //Creates connections with surrounding sites if they are open.
         int site1D = xyTo1D(row, col);
