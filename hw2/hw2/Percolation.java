@@ -47,7 +47,9 @@ public class Percolation {
         }
 
         grid[row][col] = true;
-        numOpen += 1;
+        if (!isOpen(row, col)) {
+            numOpen += 1;
+        }
 
         //Creates connections with surrounding sites if they are open.
         int site1D = xyTo1D(row, col);
@@ -100,7 +102,8 @@ public class Percolation {
             throw new IndexOutOfBoundsException();
         }
         int site1D = xyTo1D(row, col);
-        return unionFindConnected.connected(site1D, virtualTopSite);
+        return unionFindConnected.connected(site1D, virtualTopSite)
+                && unionFindNoBackWash.connected(site1D, virtualTopSite);
     }
 
     /**
