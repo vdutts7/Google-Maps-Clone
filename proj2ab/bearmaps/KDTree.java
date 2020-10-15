@@ -1,20 +1,73 @@
 package bearmaps;
+import java.util.HashSet;
 import java.util.List;
 
 public class KDTree implements PointSet {
+    private static final boolean VERTICAL = true;
+    private static final boolean HORIZONTAL = false;
+    private Node kd;
+    private HashSet<Point> pointsHashSet;
+
     private class Node {
         private Point p;
+        private double x;
+        private double y;
+        private Node left;
+        private Node right;
         private boolean orientation; //true for vertical, false for horizontal
-        private static final boolean VERTICAL = true;
-        private static final boolean HORIZONTAL = false;
+
+
+        public Node(Point p, boolean orientation) {
+            this.x = p.getX();
+            this.y = p.getY();
+            this.p = p;
+            this.orientation = orientation;
+            this.left = null;
+            this.right = null;
+        }
         
     }
+
+
     /**
      * Constructor method.
      * @param points list of Point objects
      */
     public KDTree(List<Point> points) {
+        this.kd = null;
+        pointsHashSet = new HashSet<>(points.size());
+        for (Point point: points) {
+            pointsHashSet.add(point);
+            insert(point);
+        }
+    }
 
+    private void insert(Point p) {
+        this.kd = insertHelper(this.kd, p, kd.orientation);
+    }
+
+    private Node insertHelper(Node currentNode, Point pointAdded, boolean precedingOrientation) {
+        if (currentNode == null) {
+            return new Node(pointAdded, !precedingOrientation);
+        } else {
+            //if the currentNode's orientation is true AKA vertical
+            if (currentNode.orientation) {
+                if (currentNode.y > pointAdded.getY()) {
+                    currentNode.left = insertHelper(currentNode.left, pointAdded, currentNode.orientation);
+                } else {
+                    currentNode.right = insertHelper(currentNode.right, pointAdded, currentNode.orientation);
+                }
+            }
+            //if the currentNode's orientation is false AKA horizontal
+            if (!currentNode.orientation) {
+                if (currentNode.x > pointAdded.getX()) {
+                    currentNode.left = insertHelper(currentNode.left, pointAdded, currentNode.orientation);
+                } else {
+                    currentNode.right = insertHelper(currentNode.right, pointAdded, currentNode.orientation);
+                }
+            }
+        }
+        return currentNode;
     }
 
     /**
@@ -26,6 +79,10 @@ public class KDTree implements PointSet {
     @Override
     public Point nearest(double x, double y) {
         return null;
+    }
+
+    private Node nearestHelper(Node n, Point target, Node best) {
+
     }
 
     public static void main(String[] args) {
