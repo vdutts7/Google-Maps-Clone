@@ -17,8 +17,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private double loadFactor;
     private HashSet<K> keys;
 
-    static final double DEFAULT_LOAD_FACTOR = 0.75;
-    static final int DEFAULT_INITIAL_SIZE = 16;
+    private static final double DEFAULT_LOAD_FACTOR = 0.75;
+    private static final int DEFAULT_INITIAL_SIZE = 16;
 
     /**
      * Constructors below for MyHashMap implementation.
@@ -152,7 +152,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * @return Set of all the keys in HashMap.
      */
     @Override
-    public HashSet<K> keySet() {
+    public Set<K> keySet() {
         return keys;
     }
 
