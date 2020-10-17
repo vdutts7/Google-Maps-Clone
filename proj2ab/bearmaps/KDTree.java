@@ -18,11 +18,11 @@ public class KDTree implements PointSet {
      * and horizontal (left and right subspaces).
      */
     public class Node {
-        public Point p;
-        public Node left;
-        public Node right;
+        private Point p;
+        private Node left;
+        private Node right;
         //true for vertical, false for horizontal (see KDTree class variables for reference
-        public boolean orientation;
+        private boolean orientation;
 
         /**
          * Constructor for Node class.
@@ -65,9 +65,9 @@ public class KDTree implements PointSet {
      * into appropriate locations with appropriate orientation, via use of Nodes.
      * @param currentNode the current node in the traversal process
      * @param pointAdded the point to be added to the tree
-     * @param precedingOrientation tracker for  previous orientation in the traversal process to ensure
-     *                             proper alternations
-     * @return assembled tree, in form of Node with left and right children, all the way down to leaf nodes
+     * @param precedingOrientation tracker for  previous orientation in the traversal process
+     *                             to ensure proper alternations
+     * @return assembled tree, in form of Nodes with left and right children
      */
     private Node addHelper(Node currentNode, Point pointAdded, boolean precedingOrientation) {
         if (currentNode == null) {
@@ -75,15 +75,19 @@ public class KDTree implements PointSet {
         } else {
             if (precedingOrientation) {
                 if (currentNode.p.getY() > pointAdded.getY()) {
-                    currentNode.left = addHelper(currentNode.left, pointAdded, currentNode.orientation);
+                    currentNode.left = addHelper(currentNode.left, pointAdded,
+                            currentNode.orientation);
                 } else {
-                    currentNode.right = addHelper(currentNode.right, pointAdded, currentNode.orientation);
+                    currentNode.right = addHelper(currentNode.right, pointAdded,
+                            currentNode.orientation);
                 }
             } else {
                 if (currentNode.p.getX() > pointAdded.getX()) {
-                    currentNode.left = addHelper(currentNode.left, pointAdded, currentNode.orientation);
+                    currentNode.left = addHelper(currentNode.left, pointAdded,
+                            currentNode.orientation);
                 } else {
-                    currentNode.right = addHelper(currentNode.right, pointAdded, currentNode.orientation);
+                    currentNode.right = addHelper(currentNode.right, pointAdded,
+                            currentNode.orientation);
                 }
             }
         }
@@ -97,9 +101,9 @@ public class KDTree implements PointSet {
      * This should take \(O(\log N)\) time on average where \(N\) is the number of points.
      */
      @Override
-    public Point nearest(double xInput, double yInput) {
+     public Point nearest(double xInput, double yInput) {
          return nearestHelper(kd, new Point(xInput, yInput), kd).p;
-    }
+     }
 
     /**
      * Recursive helper method for nearest method. Traverses depth of tree and searches
@@ -149,12 +153,14 @@ public class KDTree implements PointSet {
     }
 
     /**
-     * Private helper method to determine which child (good or bad) is on which side (left or right).
+     * Private helper method to determine which child (good or bad) is on
+     * which side (left or right).
      * @param node the node currently being dealt with
-     * @param inputPoint the point we eventually wish to return in nearest() associated with nearest node
+     * @param inputPoint the point we eventually wish to return in nearest()
+     *                   associated with nearest node
      * @return boolean with following equivalents:
-     *                           true represents goodChild being left child, badChild being right child
-     *                           false represents goodChild being right child, badChild being left child
+     * true represents goodChild being left child, badChild being right child
+     * false represents goodChild being right child, badChild being left child
      */
     private boolean chooseChild(Node node, Point inputPoint) {
         if (node.orientation) {
@@ -171,13 +177,16 @@ public class KDTree implements PointSet {
     private boolean closerThanCurrentBest(Node node, Point goalPoint, Node currentBest) {
         if (node.orientation) {
             Point boundaryPointVertical = new Point(goalPoint.getX(), node.p.getY());
-            if (Point.distance(boundaryPointVertical, goalPoint) < Point.distance(currentBest.p, goalPoint)) {
+            if (Point.distance(boundaryPointVertical, goalPoint)
+                    < Point.distance(currentBest.p, goalPoint)) {
                 return true;
             }
             return false;
         } else {
-            Point boundaryPointHorizontal = new Point(node.p.getX(), goalPoint.getY());
-            if (Point.distance(boundaryPointHorizontal, goalPoint) < Point.distance(currentBest.p, goalPoint)) {
+            Point boundaryPointHorizontal = new Point(node.p.getX(),
+                    goalPoint.getY());
+            if (Point.distance(boundaryPointHorizontal, goalPoint)
+                    < Point.distance(currentBest.p, goalPoint)) {
                 return true;
             }
             return false;
