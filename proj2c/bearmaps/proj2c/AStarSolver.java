@@ -31,7 +31,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         edgeTo.put(start, null);
 
         while (pq.size() > 0) {
-            if (sw.elapsedTime() >timeout) {
+            if (sw.elapsedTime() > timeout) {
                 outcome = SolverOutcome.TIMEOUT;
                 break;
             }
@@ -76,7 +76,8 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         vertexList.add(vertex);
     }
 
-    private void relaxEdges(WeightedEdge<Vertex> edge, AStarGraph<Vertex> input, Vertex goalVertex) {
+    private void relaxEdges(WeightedEdge<Vertex> edge,
+                            AStarGraph<Vertex> input, Vertex goalVertex) {
         Vertex v = edge.from();
         Vertex w = edge.to();
 
