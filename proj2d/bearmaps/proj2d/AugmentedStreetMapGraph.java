@@ -1,6 +1,7 @@
 package bearmaps.proj2d;
 
 import bearmaps.proj2ab.Point;
+import bearmaps.proj2ab.WeirdPointSet;
 import bearmaps.proj2c.streetmap.Node;
 import bearmaps.proj2c.streetmap.StreetMapGraph;
 
@@ -15,32 +16,30 @@ import java.util.*;
  */
 public class AugmentedStreetMapGraph extends StreetMapGraph {
 
-    private HashMap<Point, Long> mapOfIDs;
-    private List<Point> noNeighborNodes;
+    private WeirdPointSet weirdPointSet;
+    private List<Point> listOfPoints;
+    private HashMap<Point, Long> nodesWithNeighbors;
     //private HashSet<String> locations;
     //private HashMap<String, String> namesMap;
     //private HashMap<String, Node> cleanedLocations;
     private KDTree kd;
 
-
     public AugmentedStreetMapGraph(String dbPath) {
         super(dbPath);
         List<Node> nodes = this.getNodes();
-        mapOfIDs = new HashMap<>();
-        noNeighborNodes = new ArrayList<>();
+
+        nodesWithNeighbors = new HashMap<>();
+        listOfPoints = new ArrayList<>();
         //locations = new HashSet<>();
         //namesMap = new HashMap<>();
         //cleanedLocations = new HashMap<>();
 
         for (Node node: nodes) {
-            Long nodeID = node.id();
-            Point nodePoint = new Point(node.lon(), node.lat());
-            mapOfIDs.put(nodePoint, nodeID);
-
-            if(neighbors(nodeID).size() > 0) {
-                noNeighborNodes.add(nodePoint);
+            if(neighbors(node.id()).size() != 0) {
+                Point nodePoint = new Point(node.lon(), node.lat());
+                listOfPoints.add(nodePoint);
+                nodesWithNeighbors.put(nodePoint, node.id());
             }
-
             //attempt at Gold Points
             /**
             String fullLocationName = node.name();
@@ -56,7 +55,8 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
             }
              */
         }
-        kd = new KDTree(noNeighborNodes);
+        weirdPointSet = new WeirdPointSet(listOfPoints);
+        //kd = new KDTree(listOfPoints);
     }
 
 
@@ -68,7 +68,7 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * @return The id of the node in the graph closest to the target.
      */
     public long closest(double lon, double lat) {
-        return mapOfIDs.get(kd.nearest(lon, lat));
+        return nodesWithNeighbors.get(weirdPointSet.nearest(lon, lat));
     }
 
 
