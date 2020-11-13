@@ -5,6 +5,7 @@ import bearmaps.proj2ab.WeirdPointSet;
 import bearmaps.proj2c.streetmap.Node;
 import bearmaps.proj2c.streetmap.StreetMapGraph;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -19,10 +20,10 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
     private WeirdPointSet weirdPointSet;
     private List<Point> listOfPoints;
     private HashMap<Point, Long> nodesWithNeighbors;
-    //private HashSet<String> locations;
-    //private HashMap<String, String> namesMap;
-    //private HashMap<String, Node> cleanedLocations;
-    private KDTree kd;
+
+    private TrieST locations;
+    private HashMap<String, List<String>> cleanedLocations;
+    private HashMap<String, Node> stringsToNodes;
 
     public AugmentedStreetMapGraph(String dbPath) {
         super(dbPath);
@@ -30,9 +31,9 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
 
         nodesWithNeighbors = new HashMap<>();
         listOfPoints = new ArrayList<>();
-        //locations = new HashSet<>();
-        //namesMap = new HashMap<>();
-        //cleanedLocations = new HashMap<>();
+        locations = new TrieST();
+        cleanedLocations = new HashMap<>();
+        stringsToNodes = new HashMap<>();
 
         for (Node node: nodes) {
             if(neighbors(node.id()).size() != 0) {
@@ -40,23 +41,23 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
                 listOfPoints.add(nodePoint);
                 nodesWithNeighbors.put(nodePoint, node.id());
             }
-            //attempt at Gold Points
-            /**
-            String fullLocationName = node.name();
-            if (fullLocationName != null) {
-                String cleanedSearchName = cleanString(fullLocationName);
-                locations.add(cleanedSearchName);
-                if (!namesMap.containsKey(cleanedSearchName)) {
-                    namesMap.put(cleanedSearchName, fullLocationName);
-                }
+
+            //Gold Points
+            String locationFullName = node.name();
+            if (locationFullName != null) {
+                String cleanedSearchName = cleanString(locationFullName);
+                locations.put(cleanedSearchName, locationFullName);
+                stringsToNodes.put(locationFullName, node);
                 if (!cleanedLocations.containsKey(cleanedSearchName)) {
-                    cleanedLocations.put(cleanedSearchName, node);
+                    List<String> listOfDuplicates = new ArrayList<>();
+                    listOfDuplicates.add(locationFullName);
+                    cleanedLocations.put(cleanedSearchName, listOfDuplicates);
+                } else {
+                    cleanedLocations.get(cleanedSearchName).add(locationFullName);
                 }
             }
-             */
         }
         weirdPointSet = new WeirdPointSet(listOfPoints);
-        //kd = new KDTree(listOfPoints);
     }
 
 
@@ -81,7 +82,14 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * cleaned <code>prefix</code>.
      */
     public List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        Iterable<String> strIter = locations.keysWithPrefix(cleanString(prefix));
+        List<String> matchingPrefixLocations = new ArrayList<>();
+        for (String prfx: strIter) {
+            for (String s: cleanedLocations.get(prfx)) {
+                matchingPrefixLocations.add(s);
+            }
+        }
+        return matchingPrefixLocations;
     }
 
     /**
@@ -98,7 +106,21 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * "id" -> Number, The id of the node. <br>
      */
     public List<Map<String, Object>> getLocations(String locationName) {
-        return null;
+        Iterable<String> strIter = locations.keysThatMatch(cleanString(locationName));
+        List matchingLocations = new ArrayList<>();
+        for (String locName: strIter) {
+            for (String s: cleanedLocations.get(locName)) {
+                Node node = stringsToNodes.get(s);
+                HashMap<String, Object> stringsToObj = new HashMap<>();
+                stringsToObj.put("lat", node.lat());
+                stringsToObj.put("lon", node.lon());
+                stringsToObj.put("name", node.name());
+                stringsToObj.put("id", node.id());
+
+                matchingLocations.add(stringsToObj);
+            }
+        }
+        return matchingLocations;
     }
 
 
