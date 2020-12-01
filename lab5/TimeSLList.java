@@ -4,11 +4,11 @@ import java.util.List;
  * Class that collects timing information about SLList getLast method.
  */
 public class TimeSLList {
-    private List<Integer> Ns;
-    private List<Double> times;
-    private List<Integer> opCounts;
+    private static List<Integer> Ns;
+    private static List<Double> times;
+    private static List<Integer> opCounts;
 
-    private void printTimingTable(List<Integer> Ns, List<Double> times, List<Integer> opCounts) {
+    public static void printTimingTable(List<Integer> Ns, List<Double> times, List<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
         System.out.printf("------------------------------------------------------------\n");
         for (int i = 0; i < Ns.size(); i += 1) {
@@ -20,29 +20,33 @@ public class TimeSLList {
         }
     }
 
-    public void main(String[] args) {
-
+    public static void main(String[] args) {
         timeGetLast();
     }
 
-    public void timeGetLast() {
+    public static void timeGetLast() {
         // TODO: YOUR CODE HERE
-        for(int i = 1; i < Ns.size(); i *= 2) {
+        Ns = new ArrayList<>();
+        times = new ArrayList<>();
+        opCounts = new ArrayList<>();
+
+        SLList<Integer> testSLList = new SLList<>();
+
+
+        for (int i = 1; i < 5; i++) {
             Ns.add(i * 1000);
+            for (int j = 0; j < i * 1000; j++ ) {
+                testSLList.addLast(j);
+            }
+            Stopwatch sw = new Stopwatch();
+            for (int k = 0; k < 1000; k++) {
+                testSLList.getLast();
+            }
+            opCounts.add(1000);
+            times.add(sw.elapsedTime());
         }
+        printTimingTable(Ns, times, opCounts);
 
-        times.add(0.00);
-        times.add(0.01);
-        times.add(0.01);
-        times.add(0.04);
-        times.add(0.10);
-        times.add(0.50);
-        times.add(1.15);
-        times.add(3.74);
-
-        for(int i = 1; i <= 8; i *= 2) {
-            opCounts.add(i * 1000);
-        }
     }
 
 }

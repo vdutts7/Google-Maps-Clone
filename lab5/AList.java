@@ -33,13 +33,11 @@ public class AList<Item> {
 
     /** Inserts X into the back of the list. */
     public void addLast(Item x) {
-
-        for (int i = 1; i<items.length; i *= 2) {
-            if (i == items.length) {
-                resize((int) i * 2);
-            }
+        if (size == items.length) {
+            resize(size * 2);
         }
-
+        items[size] = x;
+        size += 1;
     }
 
     /** Returns the item from the back of the list. */
