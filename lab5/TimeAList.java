@@ -30,8 +30,8 @@ public class TimeAList {
     public void timeAListConstruction() {
         // TODO: YOUR CODE HERE
         Ns = new ArrayList<Integer>();
-        for(int i = 1; i<=8; i*=2) {
-            Ns.add(i*1000);
+        for(int i = 1; i <= 8; i *= 2) {
+            Ns.add(i * 1000);
         }
 
         times = new ArrayList<Double>();
@@ -45,8 +45,8 @@ public class TimeAList {
         times.add(3.74);
 
         opCounts = new ArrayList<Integer>();
-        for(int i = 1; i<=8; i*=2) {
-            opCounts.add(i*1000);
+        for(int i = 1; i <= 8; i *= 2) {
+            opCounts.add(i * 1000);
         }
     }
 }

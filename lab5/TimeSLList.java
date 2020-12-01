@@ -27,8 +27,8 @@ public class TimeSLList {
 
     public void timeGetLast() {
         // TODO: YOUR CODE HERE
-        for(int i = 1; i<Ns.size(); i*=2) {
-            Ns.add(i*1000);
+        for(int i = 1; i < Ns.size(); i *= 2) {
+            Ns.add(i * 1000);
         }
 
         times.add(0.00);
@@ -40,8 +40,8 @@ public class TimeSLList {
         times.add(1.15);
         times.add(3.74);
 
-        for(int i = 1; i<=8; i*=2) {
-            opCounts.add(i*1000);
+        for(int i = 1; i <= 8; i *= 2) {
+            opCounts.add(i * 1000);
         }
     }
 

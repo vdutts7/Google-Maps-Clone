@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -5,13 +6,14 @@ import static org.junit.Assert.assertEquals;
  * Created by hug.
  */
 public class TestRedBlackFloorSet {
+    static RedBlackFloorSet rbFloorSet = new RedBlackFloorSet();
+
     @Test
     public void randomizedTest() {
        // TODO: YOUR CODE HERE
-        RedBlackFloorSet rbFloorSet = new RedBlackFloorSet();
-        for(int i = 0; i < 20; i++) {
-            rbFloorSet.add(StdRandom.uniform(0.0, 10.0));
-        }
+        rbFloorSet.add(7);
+        rbFloorSet.add(9);
+        Assert.assertEquals(2,rbFloorSet.floor(7));
     }
 
 }
